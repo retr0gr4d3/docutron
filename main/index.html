@@ -25,9 +25,9 @@
 			</div>
 		</div>
 	</header>
-	<section class="announcement-banner" aria-label="Site announcement">
+	<section class="announcement-banner" id="site-announcement" aria-label="Site announcement">
 		<div class="announcement-inner">
-			<p><strong>Don't forget:</strong> Rebuild <code>manifest.json</code> after adding Markdown files.</p>
+			<p><strong>Don't forget:</strong> Rebuild <code>manifest.json</code> after adding Markdown files. <button type="button" class="announcement-dismiss" aria-label="Dismiss announcement">×</button></p>
 		</div>
 	</section>
 	<div class="doc-page">
@@ -72,6 +72,16 @@
 			</p>
 		</div>
 	</footer>
+	<script>
+		(function () {
+			var banner = document.getElementById('site-announcement');
+			var btn = banner && banner.querySelector('.announcement-dismiss');
+			if (!banner || !btn) return;
+			btn.addEventListener('click', function () {
+				banner.hidden = true;
+			});
+		})();
+	</script>
 	<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 	<script src="../doc-app.js" data-doc-base="../"></script>

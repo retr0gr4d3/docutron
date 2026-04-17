@@ -26,9 +26,9 @@
 			</div>
 		</div>
 	</header>
-	<section class="announcement-banner" aria-label="Site announcement">
+	<section class="announcement-banner" id="site-announcement" aria-label="Site announcement">
 		<div class="announcement-inner">
-			<p><strong>Docutron is here!</strong> Create a docs site simply by writing Markdown and YAML.</p>
+			<p><strong>Docutron is here!</strong> Create a docs site simply by writing Markdown and YAML. <button type="button" class="announcement-dismiss" aria-label="Dismiss announcement">×</button></p>
 		</div>
 	</section>
 	<div class="shell">
@@ -80,5 +80,15 @@
 			</p>
 		</div>
 	</footer>
+	<script>
+		(function () {
+			var banner = document.getElementById('site-announcement');
+			var btn = banner && banner.querySelector('.announcement-dismiss');
+			if (!banner || !btn) return;
+			btn.addEventListener('click', function () {
+				banner.hidden = true;
+			});
+		})();
+	</script>
 </body>
 </html>

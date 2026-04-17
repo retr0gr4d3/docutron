@@ -163,6 +163,26 @@ button:focus-visible {
 	text-align: center;
 }
 
+.announcement-dismiss {
+	display: inline-block;
+	margin: 0;
+	padding: 0.1rem 0.35rem;
+	border: none;
+	border-radius: 4px;
+	background: transparent;
+	color: var(--color-muted);
+	font: inherit;
+	font-size: 1.2em;
+	line-height: 1;
+	vertical-align: text-bottom;
+	cursor: pointer;
+}
+
+.announcement-dismiss:hover {
+	color: var(--color-text);
+	background: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
 .announcement-inner p {
 	margin: 0;
 	font-size: 0.82rem;
