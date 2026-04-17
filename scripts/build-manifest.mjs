@@ -30,7 +30,7 @@ function parseFrontMatter(raw) {
 	if (end === -1) return { meta: {}, body: raw };
 	const yaml = block.slice(3, end).trim();
 	const meta = {};
-	for (const line of yaml.split("\n")) {
+	for (const line of yaml.split(/\r?\n/)) {
 		const kv = line.match(/^(\w+)\s*:\s*(.*)$/);
 		if (!kv) continue;
 		const key = kv[1];

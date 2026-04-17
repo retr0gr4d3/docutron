@@ -1,6 +1,6 @@
 # Docutron - retrograde's easy documentation suite.
 
-`version 1`
+`version 1.1`
 
 This folder is a **standalone, static documentation viewer**: Markdown sources, a generated manifest, and a single-page app that renders docs in the browser with [marked](https://marked.js.org/) and [DOMPurify](https://github.com/cure53/DOMPurify). You can copy this tree into its **own repository** and host it on any static file host.
 
@@ -164,6 +164,7 @@ If **both** `prev` and `next` are absent (or effectively empty), the footer nav 
 ### Parser limitations
 
 - One **line per key** in the YAML block (no multi-line YAML values).
+- Line endings may be **LF** or **CRLF** (Windows); both are split correctly when parsing keys.
 - Keys match `^\w+` (letters, numbers, underscore).
 - Empty values after `:` are skipped.
 - Arrays are written on one line as `[...]` with JSON-style strings preferred.
