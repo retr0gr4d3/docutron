@@ -10,7 +10,7 @@ There is **no server-side rendering**. You **do** need to regenerate `manifest.j
 
 Check out the base project live over at my site, [retrograde.org.uk](https://retrograde.org.uk/docutron-example/).
 
-This project has already been used in the wild by OfficiallySp for his API documentation for ChatStats.live - If you would like to see this project in use in the wild to get a better taste of its strengths, check out [ChatStats.live](https://chatstats.live/docs/main/#/content/site/documentation-hub.md) and while you're at it, check out their awesome project!
+Or, if you fancy seeing it in action, this project has already been used in the wild by OfficiallySp for his API documentation for ChatStats.live - If you would like to see this projects capabilities in a production setting, check out [ChatStats.live](https://chatstats.live/docs/main/#/content/site/documentation-hub.md) and while you're at it, check out their awesome project too!
 
 ---
 
