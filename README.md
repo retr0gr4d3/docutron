@@ -1,4 +1,6 @@
-# Retrograde documentation site
+# Docutron - retrograde's easy documentation suite.
+
+`version 1`
 
 This folder is a **standalone, static documentation viewer**: Markdown sources, a generated manifest, and a single-page app that renders docs in the browser with [marked](https://marked.js.org/) and [DOMPurify](https://github.com/cure53/DOMPurify). You can copy this tree into its **own repository** and host it on any static file host.
 
