@@ -1,0 +1,58 @@
+{
+  "generated": "2026-04-17T19:56:49.204Z",
+  "docs": [
+    {
+      "path": "content/core/architecture.md",
+      "title": "Architecture",
+      "category": "Core",
+      "order": 20,
+      "tags": [
+        "overview",
+        "structure"
+      ],
+      "authors": [
+        "Retr0gr4d3"
+      ]
+    },
+    {
+      "path": "content/core/getting-started.md",
+      "title": "Getting Started",
+      "category": "Core",
+      "order": 10,
+      "tags": [
+        "intro",
+        "setup"
+      ],
+      "authors": [
+        "Retr0gr4d3"
+      ]
+    },
+    {
+      "path": "content/experiments/lab-notes.md",
+      "title": "Lab notes",
+      "category": "Experiments",
+      "order": 10,
+      "tags": [
+        "wip",
+        "notes"
+      ],
+      "authors": [
+        "Retr0gr4d3",
+        "Community"
+      ]
+    },
+    {
+      "path": "content/guides/writing-docs.md",
+      "title": "Writing documentation",
+      "category": "Guides",
+      "order": 10,
+      "tags": [
+        "authoring",
+        "markdown"
+      ],
+      "authors": [
+        "Retr0gr4d3"
+      ]
+    }
+  ]
+}

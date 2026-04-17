@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Retrograde documentation.">
+	<title>Docutron Documentation</title>
+	<link rel="apple-touch-icon" sizes="76x76" href="../src/images/R.png">
+	<link rel="icon" type="image/png" href="../src/images/R.png">
+	<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+	<header class="site-header">
+		<div class="nav-inner">
+			<div class="nav-main">
+				<a class="brand" href="../index.html">
+					<img src="../src/images/R.png" width="36" height="36" alt="">
+					<span>Docutron</span>
+				</a>
+				<nav aria-label="Primary">
+					<ul class="nav-links">
+						<li><a href="https://github.com/retr0gr4d3/docutron">GitHub</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<section class="announcement-banner" aria-label="Site announcement">
+		<div class="announcement-inner">
+			<p><strong>Don't forget:</strong> Rebuild <code>manifest.json</code> after adding Markdown files.</p>
+		</div>
+	</section>
+	<div class="doc-page">
+		<div class="doc-backdrop" id="doc-sidebar-backdrop" hidden></div>
+		<div class="doc-layout" id="doc-layout">
+			<aside class="doc-sidebar" id="doc-sidebar" aria-label="Documentation">
+				<div class="doc-sidebar-inner">
+					<p class="doc-sidebar-label">Documentation</p>
+					<nav id="doc-sidebar-nav"></nav>
+				</div>
+			</aside>
+			<div class="doc-main-wrap">
+				<div class="doc-main-toolbar">
+					<button type="button" class="doc-sidebar-desktop-toggle" id="doc-sidebar-desktop-toggle" aria-controls="doc-sidebar" aria-expanded="true" aria-label="Hide documentation sidebar">
+						<span class="doc-sidebar-desktop-toggle-icon" aria-hidden="true"></span>
+						<span class="doc-sidebar-desktop-toggle-text">Hide sidebar</span>
+					</button>
+					<button type="button" class="doc-sidebar-toggle" id="doc-sidebar-toggle" aria-controls="doc-sidebar" aria-expanded="false" aria-label="Open documentation menu">
+						<span class="doc-sidebar-toggle-bars" aria-hidden="true"></span>
+						<span class="doc-sidebar-toggle-text">Menu</span>
+					</button>
+				</div>
+				<article class="doc-panel">
+					<div class="doc-crumb-row">
+						<p id="doc-breadcrumb" class="doc-crumb">Loading…</p>
+						<p id="doc-last-edited" class="doc-last-edited" hidden></p>
+					</div>
+					<h1 id="doc-title">Loading…</h1>
+					<div id="doc-authors" class="doc-authors" style="display: none;"></div>
+					<div id="doc-tags" class="doc-tags" style="display: none;"></div>
+					<p id="doc-error" class="doc-error" role="alert" hidden></p>
+					<div id="doc-body" class="doc-body"></div>
+					<nav class="doc-nav-adjacent" id="doc-adjacent-nav" aria-label="Previous and next page" hidden></nav>
+				</article>
+			</div>
+		</div>
+	</div>
+	<footer class="site-footer">
+		<div class="footer-inner">
+			<p>
+				Copyright © 2026 · All Rights Reserved · Retrograde
+			</p>
+		</div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+	<script src="../doc-app.js" data-doc-base="../"></script>
+</body>
+</html>
