@@ -25,10 +25,11 @@ Or, if you fancy seeing it in action, this project has already been used in the 
 7. [Authoring Markdown](#authoring-markdown)
 8. [Routing and URLs](#routing-and-urls)
 9. [UI behavior](#ui-behavior)
-10. [Local development](#local-development)
-11. [Deployment](#deployment)
-12. [Troubleshooting](#troubleshooting)
-13. [File reference](#file-reference)
+10. [Announcement bar](#announcement-bar)
+11. [Local development](#local-development)
+12. [Deployment](#deployment)
+13. [Troubleshooting](#troubleshooting)
+14. [File reference](#file-reference)
 
 ---
 
@@ -54,6 +55,7 @@ Documentation/
 ├── doc-app.js                ← client app: manifest, sidebar, MD render, nav
 ├── src/
 │   ├── images/               ← e.g. R.png for favicon and header logos
+│   ├── announcement-banner.js ← dismiss + versioned localStorage for the site banner
 │   └── styles.css            ← styles for index.html (if used)
 ├── content/                  ← all documentation Markdown
 │   ├── core/
@@ -234,6 +236,24 @@ The client uses the manifest for the **sidebar** and for **default titles** on p
 
 ---
 
+## Announcement bar
+
+The landing page (`index.html`) and the docs shell (`main/index.html`) share a thin **announcement strip** above the main content. It includes a short message and a **dismiss** control (×).
+
+**Behavior**
+
+- **`src/announcement-banner.js`** runs on both pages. When a visitor dismisses the bar, the choice is stored in **`localStorage`** under the key `docutron.announcement.dismissedVersion`, together with the current **version string** (not the message text).
+- On later visits, if the stored version **matches** `data-announcement-version` on the banner element, the bar stays hidden. If **`localStorage` is unavailable** (or throws), the bar still works; dismissal simply is not remembered for that session or browser.
+
+**Changing the message and showing the bar again**
+
+1. Edit the copy inside `<section id="site-announcement">` on **`index.html`** and **`main/index.html`** as needed.
+2. **Increment `data-announcement-version`** on **both** sections (for example from `"1"` to `"2"`). Anyone who had dismissed the previous version will see the new announcement; the new dismissal is stored under the new version.
+
+Keep the two `data-announcement-version` values **in sync** so the home page and documentation agree on whether the bar is considered “already dismissed.”
+
+---
+
 ## Local development
 
 Serve the **Documentation** directory (or its parent, adjusting URLs):
@@ -258,7 +278,7 @@ node scripts/build-manifest.mjs
 ## Deployment
 
 - Upload or deploy **this entire folder** (or the whole repo if it only contains this tool).
-- Ensure `main/index.html`, `doc-app.js`, `manifest.json`, `content/**/*.md`, and `src/` (images, etc.) are all present at the paths expected by the HTML.
+- Ensure `main/index.html`, `doc-app.js`, `manifest.json`, `content/**/*.md`, and `src/` (images, **`announcement-banner.js`**, styles, etc.) are all present at the paths expected by the HTML.
 - **HTTPS** or **HTTP** consistently; CDN scripts (jsDelivr) use HTTPS.
 - Re-run the manifest script in CI before deploy if Markdown changes.
 
@@ -275,6 +295,8 @@ node scripts/build-manifest.mjs
 | `fetch` failed / CORS | Opening `index.html` via `file://` | Serve over HTTP. |
 | Prev/next wrong or missing | Front matter on **that** page | Edit `prev` / `next` (and optional labels) in the `.md` file. |
 | Sidebar always collapsed on desktop | Stored preference | Clear `localStorage` key `r2sp-doc-sidebar-collapsed` or click **Show sidebar**. |
+| Announcement bar will not stay dismissed | Private mode / blocked storage | Dismissal needs `localStorage`; if it is blocked, the bar returns on each load. |
+| Old visitors do not see a new announcement | Version not bumped | Increase `data-announcement-version` on both `index.html` and `main/index.html` when you change the message. |
 | Broken images in header | Missing `src/images/` | Add `R.png` (or your assets) under `src/images/` and keep paths in `main/index.html` in sync. |
 
 ---
@@ -290,6 +312,7 @@ node scripts/build-manifest.mjs
 | `scripts/build-manifest.mjs` | Walks `content/**/*.md`, parses front matter, writes `manifest.json`. |
 | `manifest.json` | Index of docs for the sidebar and metadata snapshot. |
 | `content/**/*.md` | Source documentation. |
+| `src/announcement-banner.js` | Versioned dismiss for `#site-announcement`; loaded from `index.html` and `main/index.html`. |
 | `src/images/` | Static images referenced by `index.html` and `main/index.html`. |
 
 ---

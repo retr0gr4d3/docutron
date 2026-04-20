@@ -26,7 +26,7 @@
 			</div>
 		</div>
 	</header>
-	<section class="announcement-banner" id="site-announcement" aria-label="Site announcement">
+	<section class="announcement-banner" id="site-announcement" data-announcement-version="1" aria-label="Site announcement">
 		<div class="announcement-inner">
 			<p><strong>Docutron is here!</strong> Create a docs site simply by writing Markdown and YAML. <button type="button" class="announcement-dismiss" aria-label="Dismiss announcement">×</button></p>
 		</div>
@@ -80,15 +80,6 @@
 			</p>
 		</div>
 	</footer>
-	<script>
-		(function () {
-			var banner = document.getElementById('site-announcement');
-			var btn = banner && banner.querySelector('.announcement-dismiss');
-			if (!banner || !btn) return;
-			btn.addEventListener('click', function () {
-				banner.hidden = true;
-			});
-		})();
-	</script>
+	<script src="./src/announcement-banner.js"></script>
 </body>
 </html>
