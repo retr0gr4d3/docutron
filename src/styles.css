@@ -751,6 +751,33 @@ a.bento-card:focus-visible {
 	color: var(--color-muted);
 }
 
+.doc-body table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 0 1rem;
+	font-size: 0.92rem;
+	line-height: 1.4;
+	border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+.doc-body thead th {
+	text-align: left;
+	font-weight: 700;
+	background: color-mix(in srgb, var(--color-accent) 14%, #0a0a0a);
+	color: var(--color-text);
+}
+
+.doc-body th,
+.doc-body td {
+	padding: 0.55rem 0.8rem;
+	border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+	vertical-align: top;
+}
+
+.doc-body tbody tr:nth-child(even) {
+	background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+
 .doc-callout {
 	--doc-callout-accent: var(--color-accent);
 	margin: 0 0 1rem;
