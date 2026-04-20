@@ -130,8 +130,9 @@ order: 10
 tags: ["tag-one", "tag-two"]
 authors: ["Author Name"]
 author: Single Author
-prev: content/core/getting-started.md
-next: content/core/architecture.md
+last_edited: YYYY-MM-DD
+prev: content/<folder>/<title>.md
+next: content/<folder>/<title>.md
 prev_label: Optional override
 next_label: Optional override
 ---
