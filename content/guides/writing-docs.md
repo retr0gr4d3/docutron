@@ -5,7 +5,7 @@ category: Guides
 order: 10
 tags: ["authoring", "markdown"]
 authors: ["Retr0gr4d3"]
-last_edited: 2026-04-17
+last_edited: 2026-04-20
 prev: content/core/architecture.md
 ---
 -->
@@ -60,6 +60,43 @@ prev_label: Back to Getting Started
 ```
 
 This page only sets **`prev`** (to Architecture), so there is no **`next`** in the footer.
+
+## Callouts
+
+Callouts are blockquotes that start with a **marker** on the first line. The viewer turns them into a titled aside (Note, Tip, Important, Warning, or Caution) with a colored left rail and icon. Regular blockquotes are unchanged.
+
+### Syntax
+
+- Use `>` on the first line with **only** a marker (case-insensitive), then add the body on further lines, each starting with `>`:
+
+```markdown
+> [!NOTE]
+> First line of body.
+> Second line of body.
+```
+
+- For a **list** inside the callout, keep using `>` on each line:
+
+```markdown
+> [!TIP]
+> - First item
+> - Second item
+```
+
+### Supported markers
+
+| Marker | Label |
+|--------|--------|
+| `[!NOTE]` | Note |
+| `[!TIP]` | Tip |
+| `[!IMPORTANT]` | Important |
+| `[!WARNING]` | Warning |
+| `[!CAUTION]` | Caution |
+
+### Other blockquotes
+
+- If the first line is not exactly a supported marker (for example `[!CUSTOM]`), the block stays a **normal blockquote** and readers see the marker text as written.
+- Any blockquote that does not use this pattern behaves like a standard quoted paragraph.
 
 ## Rebuild the manifest
 

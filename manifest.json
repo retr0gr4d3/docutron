@@ -1,6 +1,19 @@
 {
-  "generated": "2026-04-17T22:18:20.827Z",
+  "generated": "2026-04-20T18:21:17.440Z",
   "docs": [
+    {
+      "path": "content/breakdown/technical.md",
+      "title": "Technical Writeup",
+      "category": "Breakdown",
+      "order": 1,
+      "tags": [
+        "technical",
+        "analysis"
+      ],
+      "authors": [
+        "Retr0gr4d3"
+      ]
+    },
     {
       "path": "content/core/architecture.md",
       "title": "Architecture",

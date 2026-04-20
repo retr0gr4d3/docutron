@@ -5,7 +5,7 @@ category: Core
 order: 10
 tags: ["intro", "setup"]
 authors: ["Retr0gr4d3"]
-last_edited: 2026-04-17
+last_edited: 2026-04-20
 next: content/core/architecture.md
 ---
 -->
@@ -32,4 +32,4 @@ The sidebar has its **own scrollbar** when the list is taller than the panel (it
 
 ## Links
 
-See [Writing documentation](#/content/guides/writing-docs.md) for author guidelines.
+See [Writing documentation](#/content/guides/writing-docs.md) for author guidelines (front matter, navigation, and **callouts**).

@@ -204,6 +204,17 @@ The client uses the manifest for the **sidebar** and for **default titles** on p
   See [Writing documentation](#/content/guides/writing-docs.md).
   ```
 
+- **Callouts** — highlighted asides with a colored rail and icon. Start a blockquote with a marker line, then continue the body with `>` on each line (the Markdown parser may merge those into one paragraph; that is fine):
+
+  ```markdown
+  > [!NOTE]
+  > Highlights information readers should notice even when skimming.
+  ```
+
+  Supported markers (case-insensitive): `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`. The marker must be the first line of the blockquote (only the marker on that line). Lists and other block content can follow on further `>` lines. Any other blockquote, or an unknown marker such as `[!CUSTOM]`, stays a normal quote so the raw marker remains visible.
+
+  For examples and edge cases, see the **Callouts** section in [`content/guides/writing-docs.md`](content/guides/writing-docs.md).
+
 - After adding or renaming files, always **run the manifest script** and commit `manifest.json`.
 
 ---

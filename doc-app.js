@@ -327,6 +327,83 @@
 
 	let manifestDocs = [];
 
+	const CALLOUT_KINDS = new Set(["note", "tip", "important", "warning", "caution"]);
+	const CALLOUT_LABELS = {
+		note: "Note",
+		tip: "Tip",
+		important: "Important",
+		warning: "Warning",
+		caution: "Caution",
+	};
+
+	const DOC_PURIFY_CONFIG = {
+		ADD_TAGS: ["aside"],
+	};
+
+	function stripCalloutMarkerFromFirstP(p) {
+		const first = p.firstChild;
+		if (!first || first.nodeType !== Node.TEXT_NODE) return null;
+		const t = first.textContent.replace(/\r\n/g, "\n");
+		const m = t.match(/^(\[!([A-Z]+)\]\s*)([\s\S]*)$/i);
+		if (!m) return null;
+		const kind = m[2].toLowerCase();
+		if (!CALLOUT_KINDS.has(kind)) return null;
+		let rest = m[3] || "";
+		rest = rest.replace(/^\n+/, "");
+		if (rest.length === 0) {
+			first.remove();
+		} else {
+			first.textContent = rest;
+		}
+		return kind;
+	}
+
+	function transformCalloutBlockquotes(html) {
+		if (!html) return html;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString('<div id="doc-callout-parse-root">' + html + "</div>", "text/html");
+		const root = doc.getElementById("doc-callout-parse-root");
+		if (!root) return html;
+		const blockquotes = Array.from(root.querySelectorAll("blockquote"));
+		for (const bq of blockquotes) {
+			const firstEl = bq.firstElementChild;
+			if (!firstEl || firstEl.tagName !== "P") continue;
+			let kind = stripCalloutMarkerFromFirstP(firstEl);
+			if (!kind) {
+				const text = firstEl.textContent.replace(/\s+/g, " ").trim();
+				const m = text.match(/^\[!([A-Z]+)\]\s*$/i);
+				if (!m) continue;
+				kind = m[1].toLowerCase();
+				if (!CALLOUT_KINDS.has(kind)) continue;
+				firstEl.remove();
+			} else if (!firstEl.hasChildNodes()) {
+				firstEl.remove();
+			}
+			const aside = doc.createElement("aside");
+			aside.className = "doc-callout doc-callout--" + kind;
+			aside.setAttribute("role", "note");
+			const header = doc.createElement("div");
+			header.className = "doc-callout__header";
+			const icon = doc.createElement("span");
+			icon.className = "doc-callout__icon doc-callout__icon--" + kind;
+			icon.setAttribute("aria-hidden", "true");
+			const titleEl = doc.createElement("strong");
+			titleEl.className = "doc-callout__title";
+			titleEl.textContent = CALLOUT_LABELS[kind];
+			header.appendChild(icon);
+			header.appendChild(titleEl);
+			const bodyWrap = doc.createElement("div");
+			bodyWrap.className = "doc-callout__body";
+			while (bq.firstChild) {
+				bodyWrap.appendChild(bq.firstChild);
+			}
+			aside.appendChild(header);
+			aside.appendChild(bodyWrap);
+			bq.parentNode.replaceChild(aside, bq);
+		}
+		return root.innerHTML;
+	}
+
 	function loadDocument(relPath) {
 		const url = BASE + relPath;
 		return fetch(url)
@@ -339,7 +416,7 @@
 				if (typeof marked !== "undefined" && typeof marked.setOptions === "function") {
 					marked.setOptions({ gfm: true });
 				}
-				const html = DOMPurify.sanitize(marked.parse(body));
+				const html = DOMPurify.sanitize(transformCalloutBlockquotes(marked.parse(body)), DOC_PURIFY_CONFIG);
 				renderDoc(meta, html);
 				renderSidebar(groupByCategory(manifestDocs), relPath);
 				renderAdjacentNav(relPath, meta);
