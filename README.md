@@ -56,14 +56,13 @@ Documentation/
 ├── src/
 │   ├── images/               ← e.g. R.png for favicon and header logos
 │   ├── announcement-banner.js ← dismiss + versioned localStorage for the site banner
-│   └── styles.css            ← styles for index.html (if used)
+│   └── styles.css            ← shared styles for `index.html` and `main/index.html`
 ├── content/                  ← all documentation Markdown
 │   ├── core/
 │   ├── guides/
 │   └── experiments/
 ├── main/
-│   ├── index.html            ← documentation viewer entry
-│   └── styles.css
+│   └── index.html            ← documentation viewer entry
 └── scripts/
     └── build-manifest.mjs    ← scans content/ and writes manifest.json
 ```
@@ -307,7 +306,7 @@ node scripts/build-manifest.mjs
 |------|------|
 | `index.html` | Optional landing page; links can point to `main/index.html`. |
 | `main/index.html` | Documentation viewer shell: header, layout, article, scripts (marked, DOMPurify, `doc-app.js`). |
-| `main/styles.css` | Layout, theme, sidebar, article, prev/next, responsive rules. |
+| `src/styles.css` | Layout, theme, sidebar, article, prev/next, responsive rules (loaded by `index.html` and `main/index.html`). |
 | `doc-app.js` | Fetches manifest and Markdown; parses front matter; renders UI; hash routing; sidebar mobile + desktop behavior. |
 | `scripts/build-manifest.mjs` | Walks `content/**/*.md`, parses front matter, writes `manifest.json`. |
 | `manifest.json` | Index of docs for the sidebar and metadata snapshot. |
