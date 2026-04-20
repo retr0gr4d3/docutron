@@ -1,4 +1,3 @@
-// Bump data-announcement-version on #site-announcement in each HTML page when the message changes so the bar shows again.
 (function () {
 	var banner = document.getElementById('site-announcement');
 	if (!banner) return;
@@ -6,7 +5,10 @@
 	var v = banner.getAttribute('data-announcement-version');
 	if (v == null || v === '') v = '1';
 
-	var key = 'docutron.announcement.dismissedVersion';
+	var slot = banner.getAttribute('data-announcement-id');
+	if (slot == null || slot === '') slot = 'default';
+
+	var key = 'docutron.announcement.dismissedVersion.' + slot;
 	var btn = banner.querySelector('.announcement-dismiss');
 
 	try {

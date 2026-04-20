@@ -267,15 +267,14 @@ The landing page (`index.html`) and the docs shell (`main/index.html`) share a t
 
 **Behavior**
 
-- **`src/announcement-banner.js`** runs on both pages. When a visitor dismisses the bar, the choice is stored in **`localStorage`** under the key `docutron.announcement.dismissedVersion`, together with the current **version string** (not the message text).
-- On later visits, if the stored version **matches** `data-announcement-version` on the banner element, the bar stays hidden. If **`localStorage` is unavailable** (or throws), the bar still works; dismissal simply is not remembered for that session or browser.
+- **`src/announcement-banner.js`** runs on both pages. When a visitor dismisses the bar, the choice is stored in **`localStorage`** under a key scoped by **`data-announcement-id`** on the banner (for example `docutron.announcement.dismissedVersion.home`), together with the current **version string** (not the message text).
+- **`data-announcement-id`** must differ per page or shell so each announcement is dismissed independently; two pages can both use version `"1"` without sharing dismissal.
+- On later visits, if the stored version **matches** `data-announcement-version` on that banner, the bar stays hidden. If **`localStorage` is unavailable** (or throws), the bar still works; dismissal simply is not remembered for that session or browser.
 
 **Changing the message and showing the bar again**
 
-1. Edit the copy inside `<section id="site-announcement">` on **`index.html`** and **`main/index.html`** as needed.
-2. **Increment `data-announcement-version`** on **both** sections (for example from `"1"` to `"2"`). Anyone who had dismissed the previous version will see the new announcement; the new dismissal is stored under the new version.
-
-Keep the two `data-announcement-version` values **in sync** so the home page and documentation agree on whether the bar is considered “already dismissed.”
+1. Edit the copy inside `<section id="site-announcement">` on the relevant **`index.html`** (or other shell page).
+2. **Increment `data-announcement-version`** on that section only (for example from `"1"` to `"2"`). Anyone who had dismissed the previous version for that id will see the new announcement; the new dismissal is stored under that id and version.
 
 ---
 
@@ -321,7 +320,7 @@ node scripts/build-manifest.mjs
 | Prev/next wrong or missing | Front matter on **that** page | Edit `prev` / `next` (and optional labels) in the `.md` file. |
 | Sidebar always collapsed on desktop | Stored preference | Clear `localStorage` key `r2sp-doc-sidebar-collapsed` or click **Show sidebar**. |
 | Announcement bar will not stay dismissed | Private mode / blocked storage | Dismissal needs `localStorage`; if it is blocked, the bar returns on each load. |
-| Old visitors do not see a new announcement | Version not bumped | Increase `data-announcement-version` on both `index.html` and `main/index.html` when you change the message. |
+| Old visitors do not see a new announcement | Version not bumped for that banner | Increase `data-announcement-version` on the `<section id="site-announcement">` where you changed the copy (per `data-announcement-id`). |
 | Broken images in header | Missing `src/images/` | Add `R.png` (or your assets) under `src/images/` and keep paths in `main/index.html` in sync. |
 
 ---

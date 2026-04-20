@@ -119,9 +119,9 @@ If **both** sides resolve empty, the adjacent nav container is **`hidden`** and 
 
 ## Announcement banner
 
-`#site-announcement` carries **`data-announcement-version`**. On load, `announcement-banner.js` compares that string to `localStorage['docutron.announcement.dismissedVersion']`; a match **hides** the banner. Dismiss button sets the key to the current version. Storage failures are swallowed so the UI still works in locked-down profiles.
+`#site-announcement` carries **`data-announcement-id`** (scopes dismissal per page) and **`data-announcement-version`** (bump when that page’s message changes). On load, `announcement-banner.js` compares the version to `localStorage['docutron.announcement.dismissedVersion.' + id]`; a match **hides** the banner. The dismiss button sets that key to the current version. Storage failures are swallowed so the UI still works in locked-down profiles.
 
-The **same version value should stay in sync** on every HTML page that includes the banner (e.g. root `index.html` and `main/index.html`) so one dismiss does not desync across entry points.
+Different entry points should use **different `data-announcement-id` values** so the same version string on two pages does not tie dismissal together.
 
 ## DOM contract (viewer shell)
 
