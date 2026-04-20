@@ -72,6 +72,30 @@ function normalizeAuthors(meta) {
 	return [];
 }
 
+function loadCategoryOrder() {
+	const p = path.join(DOC_ROOT, "category-order.json");
+	if (!fs.existsSync(p)) return undefined;
+	try {
+		const data = JSON.parse(fs.readFileSync(p, "utf8"));
+		if (!Array.isArray(data)) {
+			console.warn("category-order.json: expected a JSON array, ignoring");
+			return undefined;
+		}
+		const out = [];
+		const seen = new Set();
+		for (const x of data) {
+			const s = typeof x === "string" ? x.trim() : "";
+			if (!s || seen.has(s)) continue;
+			seen.add(s);
+			out.push(s);
+		}
+		return out.length ? out : undefined;
+	} catch (e) {
+		console.warn("category-order.json: " + (e && e.message ? e.message : String(e)));
+		return undefined;
+	}
+}
+
 function main() {
 	const files = walkMd(CONTENT).sort();
 	const docs = [];
@@ -88,7 +112,9 @@ function main() {
 			authors: normalizeAuthors(meta),
 		});
 	}
+	const categoryOrder = loadCategoryOrder();
 	const manifest = { generated: new Date().toISOString(), docs };
+	if (categoryOrder) manifest.categoryOrder = categoryOrder;
 	fs.writeFileSync(path.join(DOC_ROOT, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n", "utf8");
 	console.log(`Wrote manifest.json with ${docs.length} document(s).`);
 }

@@ -23,3 +23,5 @@ The main article area renders Markdown to HTML in the browser using [marked](htt
 This page sets **`prev`** only (back to Getting Started). There is **no `next`** here so the UI does not suggest a follow-on page into another category (for example Experiments) where the narrative does not continue.
 
 The sidebar scrolls inside a fixed max height; on small screens it lives in a slide-out drawer opened with **Menu**.
+
+When you are ready, move on to [Writing documentation](#/content/guides/writing-docs.md).

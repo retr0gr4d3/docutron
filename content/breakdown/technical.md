@@ -2,7 +2,7 @@
 ---
 title: Technical Writeup
 category: Breakdown
-order: 1
+order: 999
 tags: ["technical", "analysis"]
 authors: ["Retr0gr4d3"]
 last_edited: 2026-04-20
@@ -142,7 +142,7 @@ Renaming these in HTML without updating the script will break rendering or acces
 
 - **HTTP(S) required:** `fetch` of `manifest.json` and `.md` files fails from `file://` in normal browser security models.
 - **Manifest drift:** new, moved, or removed files under `content/` are invisible to the sidebar until `node scripts/build-manifest.mjs` is run and the new `manifest.json` is deployed.
-- **Ordering:** sidebar category order is **alphabetical by category name**; within a category, sort is by `order` then `title`. There is no separate “category order” field in the manifest.
+- **Ordering:** sidebar category order comes from **`category-order.json`** (copied into `manifest.json` as `categoryOrder`). Categories not listed there sort **after** listed ones, alphabetically. Within a category, sort is by `order` then `title`. Omit `category-order.json` to fall back to **alphabetical** category order.
 
 ## File map (technical roles)
 

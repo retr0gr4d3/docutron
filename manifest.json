@@ -1,11 +1,11 @@
 {
-  "generated": "2026-04-20T18:21:17.440Z",
+  "generated": "2026-04-20T18:39:04.759Z",
   "docs": [
     {
       "path": "content/breakdown/technical.md",
       "title": "Technical Writeup",
       "category": "Breakdown",
-      "order": 1,
+      "order": 999,
       "tags": [
         "technical",
         "analysis"
@@ -67,5 +67,11 @@
         "Retr0gr4d3"
       ]
     }
+  ],
+  "categoryOrder": [
+    "Core",
+    "Guides",
+    "Experiments",
+    "Breakdown"
   ]
 }

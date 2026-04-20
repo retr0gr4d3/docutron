@@ -44,9 +44,25 @@
 		return { meta, body: raw.slice(m[0].length) };
 	}
 
+	function compareCategoryNames(a, b) {
+		const ca = a || "General";
+		const cb = b || "General";
+		if (!manifestCategoryOrder || !manifestCategoryOrder.length) {
+			return ca.localeCompare(cb);
+		}
+		const ia = manifestCategoryOrder.indexOf(ca);
+		const ib = manifestCategoryOrder.indexOf(cb);
+		const aListed = ia !== -1;
+		const bListed = ib !== -1;
+		if (aListed && bListed) return ia - ib;
+		if (aListed && !bListed) return -1;
+		if (!aListed && bListed) return 1;
+		return ca.localeCompare(cb);
+	}
+
 	function readingOrderSorted(docs) {
 		return docs.slice().sort(function (a, b) {
-			const c = (a.category || "").localeCompare(b.category || "");
+			const c = compareCategoryNames(a.category, b.category);
 			if (c !== 0) return c;
 			const o = (a.order || 999) - (b.order || 999);
 			if (o !== 0) return o;
@@ -67,7 +83,7 @@
 			});
 		}
 		return Array.from(map.entries()).sort(function (a, b) {
-			return a[0].localeCompare(b[0]);
+			return compareCategoryNames(a[0], b[0]);
 		});
 	}
 
@@ -326,6 +342,7 @@
 	}
 
 	let manifestDocs = [];
+	let manifestCategoryOrder = null;
 
 	const CALLOUT_KINDS = new Set(["note", "tip", "important", "warning", "caution"]);
 	const CALLOUT_LABELS = {
@@ -551,6 +568,17 @@
 			})
 			.then(function (manifest) {
 				manifestDocs = manifest.docs || [];
+				manifestCategoryOrder = null;
+				if (Array.isArray(manifest.categoryOrder)) {
+					const co = manifest.categoryOrder
+						.filter(function (x) {
+							return typeof x === "string" && x.trim();
+						})
+						.map(function (x) {
+							return x.trim();
+						});
+					if (co.length) manifestCategoryOrder = co;
+				}
 				if (!manifestDocs.length) {
 					showError("No documents in manifest. Add .md files under content/ and rebuild the manifest.");
 					renderSidebar([], null);

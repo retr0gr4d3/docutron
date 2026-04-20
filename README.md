@@ -1,11 +1,11 @@
 # Docutron - retrograde's easy documentation suite.
 
 > [!NOTE]
-> Version 1.2 is in the works. Grab the [complete 1.1 package from releases](https://github.com/retr0gr4d3/docutron/releases/tag/1.1).
+> Version 1.2 is here. Grab the [complete 1.2 package from releases](https://github.com/retr0gr4d3/docutron/releases/tag/1.2).
 
 This folder is a **standalone, static documentation viewer**: Markdown sources, a generated manifest, and a single-page app that renders docs in the browser with [marked](https://marked.js.org/) and [DOMPurify](https://github.com/cure53/DOMPurify). You can copy this tree into its **own repository** and host it on any static file host.
 
-There is **no server-side rendering**. You **do** need to regenerate `manifest.json` whenever you add, remove, or rename `.md` files under `content/` (or change manifest-driven fields), so the sidebar stays in sync.
+There is **no server-side rendering**. You **do** need to regenerate `manifest.json` whenever you add, remove, or rename `.md` files under `content/` (or change manifest-driven fields such as **category order** in `category-order.json`), so the sidebar stays in sync.
 
 ---
 
@@ -52,6 +52,7 @@ Everything the viewer needs lives **inside this folder** (no dependency on paths
 Documentation/
 ├── README.md                 ← this file
 ├── index.html                ← optional landing page (site home)
+├── category-order.json       ← optional; ordered list of sidebar category names
 ├── manifest.json             ← generated; lists all docs for the sidebar
 ├── doc-app.js                ← client app: manifest, sidebar, MD render, nav
 ├── src/
@@ -76,7 +77,9 @@ Paths in front matter (e.g. `prev`, `next`) are relative to this **Documentation
 
 1. **Add or edit** Markdown under `content/` using the [front matter](#front-matter-reference) format.
 
-2. **Regenerate the manifest** from inside this folder:
+2. **Optional:** edit **`category-order.json`** to control the **order of categories** in the sidebar (see [The manifest](#the-manifest)). Skip this file if alphabetical category order is fine.
+
+3. **Regenerate the manifest** from inside this folder:
 
    ```bash
    cd Documentation
@@ -89,9 +92,9 @@ Paths in front matter (e.g. `prev`, `next`) are relative to this **Documentation
    node path/to/Documentation/scripts/build-manifest.mjs
    ```
 
-3. **Commit** `manifest.json` if you use Git.
+4. **Commit** `manifest.json` (and `category-order.json` if you use it) if you use Git.
 
-4. **Open the viewer** over HTTP. If the server root is the `Documentation` folder:
+5. **Open the viewer** over HTTP. If the server root is the `Documentation` folder:
 
    ```text
    http://localhost:PORT/main/index.html
@@ -105,7 +108,7 @@ Paths in front matter (e.g. `prev`, `next`) are relative to this **Documentation
 
 1. **`main/index.html`** loads `doc-app.js` with `data-doc-base="../"` so requests resolve to `manifest.json` and `content/...` next to `main/`.
 
-2. **`doc-app.js`** fetches `manifest.json`, groups documents by **category**, sorts within each group by **order** then **title**, and renders the left sidebar.
+2. **`doc-app.js`** fetches `manifest.json`, groups documents by **category**, orders categories using **`categoryOrder`** from the manifest when present (otherwise **A–Z**), sorts within each group by **order** then **title**, and renders the left sidebar.
 
 3. **Navigation** uses the URL **hash**: `#/content/core/getting-started.md`. The default document is the first entry in [reading order](#routing-and-urls) if the hash is missing or invalid.
 
@@ -184,7 +187,7 @@ If **both** `prev` and `next` are absent (or effectively empty), the footer nav 
 
 `manifest.json` is **generated**; do not hand-edit it except in emergencies.
 
-Each entry typically includes:
+Each **document** entry typically includes:
 
 - `path` — path relative to the Documentation root
 - `title`, `category`, `order`
@@ -192,6 +195,16 @@ Each entry typically includes:
 - `authors` — array (normalized from `authors` / `author` in front matter)
 
 The client uses the manifest for the **sidebar** and for **default titles** on prev/next links. It does not need to list `prev`/`next`; those are read from each file when it loads.
+
+### Category order
+
+Sidebar **sections** are ordered by category. To control that order explicitly, add **`category-order.json`** at the same level as `manifest.json`: a JSON **array of strings** matching your front-matter **`category`** values, in the order you want (example: `["Core", "Guides", "Breakdown"]`).
+
+- **`scripts/build-manifest.mjs`** reads this file when it exists and writes a top-level **`categoryOrder`** array into `manifest.json`.
+- **`doc-app.js`** sorts categories using `categoryOrder`; any category **not** named in the list appears **after** all listed ones, sorted **A–Z**.
+- If **`category-order.json`** is **absent** (or invalid), categories sort **A–Z** and `categoryOrder` is omitted from the manifest.
+
+After changing `category-order.json`, run the manifest script again and deploy the new `manifest.json`.
 
 ---
 
@@ -222,7 +235,7 @@ The client uses the manifest for the **sidebar** and for **default titles** on p
 ## Routing and URLs
 
 - **Hash format:** `#/content/path/to/file.md` (leading `#/` is normalized by the app).
-- **Default page** when the hash is missing or unknown: first document in **reading order** — sort by **category** (A–Z), then **order**, then **title**.
+- **Default page** when the hash is missing or unknown: first document in **reading order** — sort by **category** (using `categoryOrder` from the manifest when present, otherwise A–Z), then **order**, then **title**.
 
 ---
 
@@ -230,7 +243,7 @@ The client uses the manifest for the **sidebar** and for **default titles** on p
 
 ### Sidebar
 
-- Lists categories and pages from `manifest.json`.
+- Lists categories and pages from `manifest.json`. Category order follows **`categoryOrder`** in the manifest when the build included it; see [Category order](#category-order) under *The manifest*.
 - On **wide** viewports the sidebar is a **scrollable** column with a max height so it does not stretch to match the full article height.
 - **Desktop (≥881px):** **Hide sidebar** / **Show sidebar** toggles collapse; state is stored in `localStorage` under `r2sp-doc-sidebar-collapsed` (`1` = collapsed).
 - **Mobile (≤880px):** **Menu** opens a **drawer**; **backdrop** tap or **Escape** closes it. Choosing a sidebar link closes the drawer.
@@ -321,7 +334,8 @@ node scripts/build-manifest.mjs
 | `main/index.html` | Documentation viewer shell: header, layout, article, scripts (marked, DOMPurify, `doc-app.js`). |
 | `src/styles.css` | Layout, theme, sidebar, article, prev/next, responsive rules (loaded by `index.html` and `main/index.html`). |
 | `doc-app.js` | Fetches manifest and Markdown; parses front matter; renders UI; hash routing; sidebar mobile + desktop behavior. |
-| `scripts/build-manifest.mjs` | Walks `content/**/*.md`, parses front matter, writes `manifest.json`. |
+| `scripts/build-manifest.mjs` | Walks `content/**/*.md`, parses front matter; merges optional `category-order.json`; writes `manifest.json`. |
+| `category-order.json` | Optional ordered list of category names; drives `categoryOrder` in the manifest. |
 | `manifest.json` | Index of docs for the sidebar and metadata snapshot. |
 | `content/**/*.md` | Source documentation. |
 | `src/announcement-banner.js` | Versioned dismiss for `#site-announcement`; loaded from `index.html` and `main/index.html`. |
